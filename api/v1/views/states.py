@@ -34,7 +34,7 @@ def create_state():
         return jsonify({"error": "Not a JSON"}), 400
     if 'name' not in request.get_json():
         return jsonify({"error": "Missing name"}), 400
-    state = base_model.State(**request.get_json())
+    state = State(**request.get_json())
     state.save()
     return jsonify(state.to_dict()), 201
 
@@ -42,7 +42,7 @@ def create_state():
 @app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
 def update_state(state_id):
     """Updates a State object"""
-    state = storage.get("State", state_id)
+    state = storage.get(State, state_id)
     if state is None:
         return jsonify({"error": "Not found"}), 404
     if not request.get_json():
