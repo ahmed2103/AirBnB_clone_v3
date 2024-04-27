@@ -1,4 +1,5 @@
-from flask import Flask
+#!/usr/bin/python3
+"""this module starts a Flask web application"""
 from models import storage
 from api.v1.views import app_views
 from os import getenv
