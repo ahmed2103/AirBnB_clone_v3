@@ -3,6 +3,7 @@
 from api.v1.views import app_views
 from flask import jsonify, request
 from models import base_model, storage
+from models.state import State
 
 
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
@@ -15,7 +16,7 @@ def get_states():
 @app_views.route('/states/<state_id>', methods=['GET', 'DELETE'], strict_slashes=False)
 def get_or_del_state(state_id):
     """Retrieves a State object & deletes it if requested"""
-    state = storage.get("State", state_id)
+    state = storage.get(State, state_id)
     if state is None:
         return jsonify({"error": "Not found"}), 404
     if request.method == 'GET':
