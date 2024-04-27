@@ -43,7 +43,7 @@ def add_state():
 def manipulate_state(state_id):
     """GET/UPDATE/DELETE State object based off id else raise 400"""
 
-    state = storage.get("State", state_id)  # Get State
+    state = storage.get(State, state_id)  # Get State
     if not state:
         abort(404)
 
