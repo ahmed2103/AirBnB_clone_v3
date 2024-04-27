@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Handles all default RestFul API actions for State objects"""
 from api.v1.views import app_views
-from flask import jsonify, request
+from flask import jsonify, request, abort
 from models import base_model, storage
 from models.state import State
 
@@ -18,7 +18,7 @@ def get_or_del_state(state_id):
     """Retrieves a State object & deletes it if requested"""
     state = storage.get(State, state_id)
     if state is None:
-        return jsonify({"error": "Not found"}), 404
+        abort(404)
     if request.method == 'GET':
         return jsonify(state.to_dict())
     else:
@@ -44,7 +44,7 @@ def update_state(state_id):
     """Updates a State object"""
     state = storage.get(State, state_id)
     if state is None:
-        return jsonify({"error": "Not found"}), 404
+        abort(404)
     if not request.get_json():
         return jsonify({"error": "Not a JSON"}), 400
     for key, value in request.get_json().items():
