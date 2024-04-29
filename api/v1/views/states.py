@@ -13,7 +13,8 @@ def get_states():
     return jsonify([state.to_dict() for state in states.values()])
 
 
-@app_views.route('/states/<state_id>', methods=['GET', 'DELETE'], strict_slashes=False)
+@app_views.route('/states/<state_id>',
+                 methods=['GET', 'DELETE'], strict_slashes=False)
 def get_or_del_state(state_id):
     """Retrieves a State object & deletes it if requested"""
     state = storage.get(State, state_id)
