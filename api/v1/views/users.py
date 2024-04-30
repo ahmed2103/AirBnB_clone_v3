@@ -28,7 +28,7 @@ def get_del_user_by_id(user_id):
 
 
 @app_views.route('/users', methods=['POST'],
-                    strict_slashes=False)
+                 strict_slashes=False)
 def create_user():
     """Creates a user"""
     data = request.json()
@@ -44,7 +44,7 @@ def create_user():
 
 
 @app_views.route('/users/<user_id>', methods=['PUT'],
-                    strict_slashes=False)
+                 strict_slashes=False)
 def update_user(user_id):
     """Updates a user by id"""
     user = storage.get(User, user_id)
@@ -58,4 +58,3 @@ def update_user(user_id):
             setattr(user, key, value)
     user.save()
     return jsonify(user.to_dict()), 200
-
