@@ -17,10 +17,7 @@ def amenities_of_place(place_id):
     place = storage.get(Place, place_id)
     if place is None:
         abort(404)
-    if getenv('HBNB_TYPE_STORAGE') == 'db':
-        return jsonify([amenity.to_dict() for amenity in place.amenities])
-    return jsonify([storage.get(Amenity, amenity_id).to_dict()
-                    for amenity_id in place.amenity_ids])
+    return jsonify([amenity.to_dict() for amenity in place.amenities])
 
 
 @app_views.route('/places/<place_id>/amenities/<amenity_id>',
@@ -28,30 +25,25 @@ def amenities_of_place(place_id):
 def link_amenity_place(place_id, amenity_id):
     """Links or deletes an Amenity object to a Place object"""
     place = storage.get(Place, place_id)
-    if place is None:
-        abort(404)
     amenity = storage.get(Amenity, amenity_id)
-    if amenity is None:
+    if place or amenity is None:
         abort(404)
     if request.method == 'DELETE':
-        if getenv('HBNB_TYPE_STORAGE') != 'db':
-            if amenity not in place.amenities:
-                abort(404)
+        if amenity not in place.amenities:
+            abort(404)
+        if getenv('HBNB_TYPE_STORAGE') == 'db':
             place.amenities.remove(amenity)
         else:
-            if amenity_id not in place.amenity_ids:
-                abort(404)
             place.amenity_ids.remove(amenity_id)
+        storage.delete(amenity)
         storage.save()
         return jsonify({}), 200
     else:
+        if amenity in place.amenities:
+            return jsonify(amenity.to_dict()), 200
         if getenv('HBNB_TYPE_STORAGE') == 'db':
-            if amenity in place.amenities:
-                return jsonify(amenity.to_dict()), 200
             place.amenities.append(amenity)
         else:
-            if amenity_id in place.amenity_ids:
-                return jsonify(amenity.to_dict()), 200
             place.amenity_ids.append(amenity_id)
         storage.save()
         return jsonify(amenity.to_dict()), 201
