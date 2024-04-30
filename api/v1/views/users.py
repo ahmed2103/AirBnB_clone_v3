@@ -10,8 +10,8 @@ from models.user import User
                  strict_slashes=False)
 def get_users():
     """Retrieves all users"""
-    return jsonify([user.to_dict()
-                    for user in storage.all(User).values()])
+    users = storage.all(User)
+    return jsonify([user.to_dict() for user in users.values()])
 
 
 @app_views.route('users/<user_id>', methods=['GET', 'DELETE'],
