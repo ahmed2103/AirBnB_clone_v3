@@ -24,6 +24,7 @@ def get_del_user_by_id(user_id):
     if request.method == 'GET':
         return jsonify(user.to_dict())
     storage.delete(user)
+    storage.save()
     return jsonify({}, 200)
 
 
