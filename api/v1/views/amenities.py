@@ -1,4 +1,4 @@
-#!/usr?bin/python3
+#!/usr/bin/python3
 """Handles all default RestFul API actions for amenities view"""
 
 
